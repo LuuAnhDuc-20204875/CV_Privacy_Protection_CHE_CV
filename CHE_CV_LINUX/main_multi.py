@@ -44,5 +44,4 @@ def hide_cv():
     return jsonify(results)
 
 if __name__ == '__main__':
-    print("🚀 API đang chạy bằng Waitress tại http://43.239.223.148:8000/hide_cv")
     serve(app, host='0.0.0.0', port=8000, threads=3)  # ✅ xử lý tối đa 4 request cùng lúc

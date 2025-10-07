@@ -54,9 +54,5 @@ def hide_cv():
     return jsonify(result)
 
 
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=5000, debug=True)
-
 if __name__ == '__main__':
-    # print("🚀 API đang chạy tại http://43.239.233.148:5000/hide_cv")
     app.run(host='0.0.0.0', port=8001, debug=False)

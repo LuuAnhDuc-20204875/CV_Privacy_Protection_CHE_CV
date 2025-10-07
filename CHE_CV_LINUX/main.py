@@ -51,5 +51,4 @@ def hide_cv():
 
 
 if __name__ == '__main__':
-    # print("🚀 API đang chạy tại http://43.239.233.148:5000/hide_cv")
     app.run(host='0.0.0.0', port=8001, debug=False)
