@@ -1,0 +1,10 @@
+# matplotlib
+# pywin32
+easyocr
+opencv-python
+pdf2image
+numpy
+flask
+certifi
+gunicorn
+python-docx

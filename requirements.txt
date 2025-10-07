@@ -1,0 +1,9 @@
+matplotlib
+easyocr
+opencv-python
+pdf2image
+python-docx
+pywin32
+numpy
+flask
+certifi
