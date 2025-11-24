@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from concurrent.futures import ThreadPoolExecutor
 import os, urllib.request, time
-from processor.file_router_new import handle_file_by_url
+from processor.file_router_new import handle_file_by_url_viec3s
+from processor.file_router_new_backup import handle_file_by_url
 import traceback
 import multiprocessing
 
@@ -37,6 +38,34 @@ def process_single_cv(item):
             "link_error": 1
         }
 
+def process_single_cv_viec3s(item):
+    file_id = item.get("id")
+    url = item.get("link")
+    try:
+        start_time = time.time()
+        print(f"🚀 Bắt đầu xử lý file {file_id}")
+        # Gọi xử lý với 2 chế độ
+        output_link_all, output_link_watermark = handle_file_by_url_viec3s(file_id, url, app.config['UPLOAD_FOLDER'])
+        output_link_all = output_link_all.replace('PaddleOCR/', '')
+        output_link_watermark = output_link_watermark.replace('PaddleOCR/', '')
+        end_time = time.time()
+        print(f"✅ Xử lý xong file {file_id} trong {end_time - start_time:.2f} giây")
+        return {
+            "id": file_id,
+            "link": output_link_all,
+            "link_watermark": output_link_watermark,
+            "link_error": 0
+        }
+    except Exception as e:
+        traceback.print_exc()
+        return {
+            "id": file_id,
+            "link": "",
+            "link_watermark": "",
+            "link_error": 1
+        }
+
+
 @app.route('/hide_cv', methods=['POST'])
 def hide_cv():
     print("📥 API /hide_cv đã được gọi")
@@ -44,6 +73,16 @@ def hide_cv():
     print(f"➡️ Tổng số file cần xử lý: {len(data)}")
 
     results = list(executor.map(process_single_cv, data))
+
+    return jsonify(results)
+
+@app.route('/hide_cv_viec3s', methods=['POST'])
+def hide_cv_viec3s():
+    print("📥 API /hide_cv_viec3s đã được gọi")
+    data = request.json
+    print(f"➡️ Tổng số file cần xử lý: {len(data)}")
+
+    results = list(executor.map(process_single_cv_viec3s, data))
 
     return jsonify(results)
 
